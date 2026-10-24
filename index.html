@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pulse SNS</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #080b10;
+      color: #f4f7fb;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    header {
+      padding: 20px;
+      border-bottom: 1px solid #252b36;
+      font-size: 25px;
+      font-weight: bold;
+      color: #54a6ff;
+    }
+    main { max-width: 650px; margin: auto; }
+    .composer, .post {
+      padding: 18px;
+      border-bottom: 1px solid #252b36;
+    }
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 14px;
+      background: #111722;
+      color: white;
+      border: 1px solid #303949;
+      border-radius: 12px;
+      font: inherit;
+      resize: vertical;
+    }
+    button {
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 22px;
+      background: #2588f5;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .send { display: block; margin: 10px 0 0 auto; }
+    .muted { color: #929bad; font-size: 13px; }
+    .post p { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .like { background: transparent; color: #ff7195; padding-left: 0; }
+  </style>
+</head>
+<body>
+  <header>⚡ Pulse SNS</header>
+  <main>
+    <section class="composer">
+      <textarea id="message" maxlength="280" placeholder="今なにしてる？"></textarea>
+      <p class="muted">280文字まで投稿できるよ</p>
+      <button class="send" id="send">投稿する</button>
+    </section>
+    <section id="posts"></section>
+  </main>
+  <script>
+    const message = document.getElementById("message");
+    const posts = document.getElementById("posts");
+
+    function addPost(text) {
+      const article = document.createElement("article");
+      article.className = "post";
+
+      const name = document.createElement("strong");
+      name.textContent = "ゲスト";
+
+      const body = document.createElement("p");
+      body.textContent = text;
+
+      const like = document.createElement("button");
+      like.className = "like";
+      like.textContent = "♡ いいね 0";
+      let count = 0;
+      like.addEventListener("click", () => {
+        count++;
+        like.textContent = "♥ いいね " + count;
+      });
+
+      article.append(name, body, like);
+      posts.prepend(article);
+    }
+
+    document.getElementById("send").addEventListener("click", () => {
+      const text = message.value.trim();
+      if (!text) {
+        alert("投稿内容を入力してな！");
+        return;
+      }
+      addPost(text);
+      message.value = "";
+    });
+  </script>
+</body>
+</html>
